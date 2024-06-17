@@ -16,7 +16,7 @@ objets.append(Objet(9,1))
 
 taille_bac=5
 
-bacs=Algorithme.best_fit(objets,taille_bac)
+bacs=Algorithme.worst_fit(objets,taille_bac)
 
 
 # for bac in bacs:
