@@ -9,7 +9,7 @@ class Socle:
         self.rectangles= []
         self.etages = []
 
-    def add_rect_nfdh(self, rect):
+    def add_rect(self, rect):
         self.rectangles.append(rect)
         rect.pos_x = self.pos_x_actuel
         rect.pos_y = self.pos_y_actuel
