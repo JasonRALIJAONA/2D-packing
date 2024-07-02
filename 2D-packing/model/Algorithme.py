@@ -1,3 +1,5 @@
+from util.Socle import Socle
+
 class Algorithme:
     def __init__(self) -> None:
         pass
@@ -7,13 +9,35 @@ class Algorithme:
     
     def next_fit_dh (self ,rectangles , socle):
         rect=self.sort_by_height(rectangles)
-
+        ind_etage=0
+        futur_etage_y=0
         for i in range (len(rect)):
             if rect[i].height <= socle.height and rect[i].width <= socle.width:
-                width_restant , height_restant = socle.espace_restant()
+                if (i==0):
+                    futur_etage_y=rect[i].height
+                    socle.etages.append(Socle(socle.pos_x,socle.pos_y_actuel,socle.width,rect[i].height))
 
-                if rect[i].width <= width_restant:
-                    socle.add_rect(rect[i])
+                etage=socle.etages[ind_etage]
+                width_restant, height_restant = etage.espace_restant()
+
+                if (rect[i].width <= width_restant):
+                    etage.add_rect_nfdh(rect[i])
+                elif (rect[i].height <= socle.hauteur_etage_restant()):
+                    socle.pos_y_actuel += futur_etage_y
+                    futur_etage_y = rect[i].height
+                    ind_etage+=1
+                    socle.etages.append(Socle(socle.pos_x , socle.pos_y_actuel, socle.width , rect[i].height))
+                    temp=socle.etages[ind_etage]
+                    temp.add_rect_nfdh(rect[i])
+
+                
+
+    def first_fit_dh(self, rectangles, socle):
+        rect = self.sort_by_height(rectangles)
+
+        for i in range(len(rect)):
+            if rect[i].height <= socle.height and rect[i].width <= socle.width:
+                width_restant, height_restant = socle.espace_restant()
 
     
 
