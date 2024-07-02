@@ -14,7 +14,7 @@ rectangles.append(Rectangle(6,10,10))
 socle = Socle(0,0,100,100) 
 
 algo=Algorithme()
-algo.first_fit_dh(rectangles,socle)
+algo.best_fit_dh(rectangles,socle)
 
 for rect in rectangles:
     print(f"({rect.id}) x: {rect.pos_x}  ,  y: {rect.pos_y} , width: {rect.width} , height: {rect.height}")
