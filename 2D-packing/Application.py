@@ -10,71 +10,93 @@ class Application(tk.Frame):
         super().__init__(master)
         self.master = master
         self.master.title("Formulaire")
-        self.master.geometry("400x700")
+        self.master.geometry("400x800")
         self.pack(padx=10, pady=10)
-        self.create_widgets()
+        
         self.rectangles = []
         self.socle = None
 
-    def create_widgets(self):
-        # Nouvelles entrées pour la taille du socle
-        self.label_socle_width = ttk.Label(self, text="Largeur du socle:")
+        self.create_socle_form()
+        self.create_rectangle_form()
+        self.create_algorithm_execution_form()
+        self.create_result_text()
+
+    def create_socle_form(self):
+        # Formulaire pour le socle, chargement et sauvegarde
+        socle_frame = ttk.LabelFrame(self, text="Socle - Chargement - Sauvegarde")
+        socle_frame.pack(padx=10, pady=10, fill=tk.BOTH)
+
+        self.label_socle_width = ttk.Label(socle_frame, text="Largeur du socle:")
         self.label_socle_width.pack(pady=5)
-        self.entry_socle_width = ttk.Entry(self)
+        self.entry_socle_width = ttk.Entry(socle_frame)
         self.entry_socle_width.pack(pady=5)
 
-        self.label_socle_height = ttk.Label(self, text="Hauteur du socle:")
+        self.label_socle_height = ttk.Label(socle_frame, text="Hauteur du socle:")
         self.label_socle_height.pack(pady=5)
-        self.entry_socle_height = ttk.Entry(self)
+        self.entry_socle_height = ttk.Entry(socle_frame)
         self.entry_socle_height.pack(pady=5)
 
-        # Widgets pour saisir les dimensions des rectangles
-        self.label_width = ttk.Label(self, text="Largeur:")
-        self.label_width.pack(pady=5)
-        self.entry_width = ttk.Entry(self)
-        self.entry_width.pack(pady=5)
+        self.validate_socle_button = ttk.Button(socle_frame, text="Valider Socle", command=self.validate_socle)
+        self.validate_socle_button.pack(pady=10)
 
-        self.label_height = ttk.Label(self, text="Hauteur:")
-        self.label_height.pack(pady=5)
-        self.entry_height = ttk.Entry(self)
-        self.entry_height.pack(pady=5)
-
-        # Bouton pour ajouter un rectangle
-        self.add_button = ttk.Button(self, text="Ajouter Rectangle", command=self.add_rectangle)
-        self.add_button.pack(pady=10)
-
-        # Bouton pour charger les données
-        self.load_data_button = ttk.Button(self, text="Charger Données", command=self.load_data)
+        self.load_data_button = ttk.Button(socle_frame, text="Charger Données", command=self.load_data)
         self.load_data_button.pack(pady=10)
 
-        self.label_height = ttk.Label(self, text="Choisir l'algorithme:")
+        self.save_data_button = ttk.Button(socle_frame, text="Sauvegarder Données", command=self.save_data)
+        self.save_data_button.pack(pady=10)
+
+    def create_rectangle_form(self):
+        # Formulaire pour ajouter des rectangles
+        rectangle_frame = ttk.LabelFrame(self, text="Rectangles")
+        rectangle_frame.pack(padx=10, pady=10, fill=tk.BOTH)
+
+        self.label_width = ttk.Label(rectangle_frame, text="Largeur:")
+        self.label_width.pack(pady=5)
+        self.entry_width = ttk.Entry(rectangle_frame)
+        self.entry_width.pack(pady=5)
+
+        self.label_height = ttk.Label(rectangle_frame, text="Hauteur:")
         self.label_height.pack(pady=5)
-        # Combobox pour choisir l'algorithme
-        self.algorithm_combobox = ttk.Combobox(self, values=["Next_fit", "First_fit", "Best_fit"])
+        self.entry_height = ttk.Entry(rectangle_frame)
+        self.entry_height.pack(pady=5)
+
+        self.add_button = ttk.Button(rectangle_frame, text="Ajouter Rectangle", command=self.add_rectangle)
+        self.add_button.pack(pady=10)
+
+    def create_algorithm_execution_form(self):
+        # Formulaire pour l'exécution de l'algorithme
+        algorithm_frame = ttk.LabelFrame(self, text="Algo")
+        algorithm_frame.pack(padx=10, pady=10, fill=tk.BOTH)
+
+        self.label_algorithm = ttk.Label(algorithm_frame, text="Choisir l'algorithme:")
+        self.label_algorithm.pack(pady=5)
+        self.algorithm_combobox = ttk.Combobox(algorithm_frame, values=["Next_fit", "First_fit", "Best_fit"])
         self.algorithm_combobox.current(0)
         self.algorithm_combobox.pack(pady=5)
 
-        # Bouton pour exécuter l'algorithme sélectionné
-        self.execute_button = ttk.Button(self, text="Exécuter l'Algorithmme", command=lambda: self.run_algorithm(self.algorithm_combobox.get()))
+        self.execute_button = ttk.Button(algorithm_frame, text="Exécuter l'Algorithmme", command=self.execute_algorithm)
         self.execute_button.pack(pady=10)
 
-        # Bouton pour sauvegarder les données
-        self.save_data_button = ttk.Button(self, text="Sauvegarder Données", command=self.save_data)
-        self.save_data_button.pack(pady=10)
+    def create_result_text(self):
+        # Zone de texte pour afficher les résultats
+        result_frame = ttk.LabelFrame(self, text="Résultats")
+        result_frame.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
 
-        self.result_text = tk.Text(self, wrap=tk.WORD, height=10)
-        self.result_text.pack(pady=10)
+        self.result_text = tk.Text(result_frame, wrap=tk.WORD, height=10)
+        self.result_text.pack(pady=10, fill=tk.BOTH, expand=True)
 
     def save_data(self):
+        # Sauvegarde des données dans un fichier JSON
         data = {
             "rectangles": [rect.__dict__ for rect in self.rectangles],
             "socle": self.socle.__dict__ if self.socle else None,
         }
         with open('data.json', 'w') as file:
-            json.dump(data, file, indent=4)
+            json.dump(data, file)
         self.result_text.insert(tk.END, "Données sauvegardées avec succès.\n")
-            
+
     def load_data(self):
+        # Chargement des données depuis un fichier JSON
         try:
             with open('data.json', 'r') as file:
                 data = json.load(file)
@@ -89,7 +111,6 @@ class Application(tk.Frame):
                     socle_data['width'],
                     socle_data['height']
                 )
-                # Mettre à jour les champs d'entrée avec les valeurs du socle
                 self.entry_socle_width.delete(0, tk.END)
                 self.entry_socle_width.insert(0, str(socle_data['width']))
                 self.entry_socle_height.delete(0, tk.END)
@@ -101,15 +122,8 @@ class Application(tk.Frame):
             self.result_text.insert(tk.END, f"Erreur lors du chargement des données: clé manquante {e}\n")
 
     def add_rectangle(self):
+        # Ajout d'un rectangle à la liste
         try:
-            try:
-                self.socle_width = int(self.entry_socle_width.get())
-                self.socle_height = int(self.entry_socle_height.get())
-                self.socle = Socle(0, 0, self.socle_width, self.socle_height)
-            except ValueError:
-                self.result_text.insert(tk.END, "Erreur: Veuillez entrer des nombres valides pour la largeur et la hauteur du socle.\n")
-                return
-            
             width = int(self.entry_width.get())
             height = int(self.entry_height.get())
             rectangle = Rectangle(len(self.rectangles) + 1, width, height)
@@ -118,14 +132,24 @@ class Application(tk.Frame):
         except ValueError:
             self.result_text.insert(tk.END, "Erreur: Veuillez entrer des nombres valides pour la largeur et la hauteur des rectangles.\n")
 
+    def validate_socle(self):
+        try:
+            width = int(self.entry_socle_width.get())
+            height = int(self.entry_socle_height.get())
+            self.socle = Socle(0, 0, width, height)
+            # self.update_result_text()
+        except ValueError:
+            self.result_text.insert(tk.END, "Erreur: Veuillez entrer des nombres valides pour la largeur et la hauteur du socle.\n")
+
     def update_result_text(self):
+        # Mise à jour du texte de résultat
         self.result_text.delete('1.0', tk.END)
         for rect in self.rectangles:
             self.result_text.insert(tk.END, f"Rectangle {rect.id}: ({rect.pos_x}, {rect.pos_y})\n")
 
-    def run_algorithm(self, algorithm_name):
-        
-
+    def execute_algorithm(self):
+        # Exécution de l'algorithme sélectionné
+        algorithm_name = self.algorithm_combobox.get()
         algo = Algorithme()
         if algorithm_name == "Next_fit":
             algo.next_fit_dh(self.rectangles, self.socle)
@@ -141,6 +165,7 @@ class Application(tk.Frame):
         self.draw_canvas(algorithm_name)
 
     def draw_canvas(self, title):
+        # Dessin du canvas avec les rectangles placés
         try:
             socle_width = int(self.entry_socle_width.get())
             socle_height = int(self.entry_socle_height.get())
@@ -161,7 +186,7 @@ class Application(tk.Frame):
             if rect.pos_x != -1:
                 rect_color_hex = "#" + "".join([f"{x:02X}" for x in rect.color])
                 canvas.create_rectangle(rect.pos_x, rect.pos_y, rect.pos_x + rect.width, rect.pos_y + rect.height, fill=rect_color_hex, outline=rect_color_hex)
-                canvas.create_text(rect.pos_x + rect.width / 2, rect.pos_y + rect.height / 2, text=str(index + 1), font=("Arial", 10))
+                canvas.create_text(rect.pos_x + rect.width / 2, rect.pos_y + rect.height / 2, text=str(index + 1), font=("Arial", 12))
 
 if __name__ == "__main__":
     root = tk.Tk()
