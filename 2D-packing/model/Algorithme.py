@@ -88,5 +88,9 @@ class Algorithme:
                 if etage_choisi[1]!=float("inf"):
                     socle.etages[etage_choisi[0]].add_rect(rect[i])
 
+
+    
+    def brut_force(self , rectangles , socle):
+        pass
                 
                 
