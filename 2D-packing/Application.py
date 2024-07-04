@@ -70,7 +70,7 @@ class Application(tk.Frame):
 
         self.label_algorithm = ttk.Label(algorithm_frame, text="Choisir l'algorithme:")
         self.label_algorithm.pack(pady=5)
-        self.algorithm_combobox = ttk.Combobox(algorithm_frame, values=["Next_fit", "First_fit", "Best_fit"])
+        self.algorithm_combobox = ttk.Combobox(algorithm_frame, values=["Next_fit", "First_fit", "Best_fit", "Brut_force"])
         self.algorithm_combobox.current(0)
         self.algorithm_combobox.pack(pady=5)
 
@@ -92,7 +92,7 @@ class Application(tk.Frame):
             "socle": self.socle.__dict__ if self.socle else None,
         }
         with open('data.json', 'w') as file:
-            json.dump(data, file)
+            json.dump(data, file, indent=4)
         self.result_text.insert(tk.END, "Données sauvegardées avec succès.\n")
 
     def load_data(self):
@@ -157,6 +157,8 @@ class Application(tk.Frame):
             algo.first_fit_dh(self.rectangles, self.socle)
         elif algorithm_name == "Best_fit":
             algo.best_fit_dh(self.rectangles, self.socle)
+        elif algorithm_name == "Brut_force":
+            algo.brut_force(self.rectangles, self.socle)
         else:
             self.result_text.insert(tk.END, "Algorithme non trouvé.\n")
             return
