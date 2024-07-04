@@ -162,7 +162,7 @@ class Application(tk.Frame):
         else:
             self.result_text.insert(tk.END, "Algorithme non trouvé.\n")
             return
-
+        self.load_data
         self.update_result_text()
         self.draw_canvas(algorithm_name)
 
