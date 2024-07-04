@@ -15,8 +15,8 @@ socle = Socle(0,0,100,100)
 
 algo=Algorithme()
 # algo.best_fit_dh(rectangles,socle)
-result=algo.brut_force(rectangles,socle)
+algo.brut_force(rectangles,socle)
 
 
-for rect in result:
+for rect in rectangles:
     print(f"({rect.id}) x: {rect.pos_x}  ,  y: {rect.pos_y} , width: {rect.width} , height: {rect.height}")

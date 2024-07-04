@@ -119,8 +119,14 @@ class Algorithme:
                     break
     
             if success:
-                return placed_rects  # Found a successful arrangement
-    
-        return None  # No arrangement found
+                break
+
+        #update the posx and posy of each rectangle 
+        for rec in placed_rects:
+            for org_rec in rectangles:
+                if rec.id == org_rec.id:
+                    org_rec.pos_x = rec.pos_x
+                    org_rec.pos_y = rec.pos_y
+                    break
                 
                 
