@@ -1,1 +1,86 @@
-{"rectangles": [{"id": 1, "width": 150, "height": 250, "pos_x": -1, "pos_y": -1, "color": [192, 207, 60]}, {"id": 2, "width": 100, "height": 200, "pos_x": -1, "pos_y": -1, "color": [120, 159, 8]}, {"id": 3, "width": 275, "height": 150, "pos_x": -1, "pos_y": -1, "color": [124, 149, 109]}, {"id": 4, "width": 100, "height": 150, "pos_x": -1, "pos_y": -1, "color": [148, 135, 129]}, {"id": 5, "width": 200, "height": 100, "pos_x": -1, "pos_y": -1, "color": [232, 48, 102]}, {"id": 6, "width": 50, "height": 50, "pos_x": -1, "pos_y": -1, "color": [188, 88, 200]}], "socle": {"pos_x": 0, "pos_y": 0, "width": 500, "height": 500, "pos_x_actuel": 0, "pos_y_actuel": 0, "rectangles": [], "etages": []}}
+{
+    "rectangles": [
+        {
+            "id": 1,
+            "width": 150,
+            "height": 250,
+            "pos_x": -1,
+            "pos_y": -1,
+            "color": [
+                103,
+                11,
+                24
+            ]
+        },
+        {
+            "id": 2,
+            "width": 100,
+            "height": 200,
+            "pos_x": -1,
+            "pos_y": -1,
+            "color": [
+                100,
+                119,
+                254
+            ]
+        },
+        {
+            "id": 3,
+            "width": 275,
+            "height": 150,
+            "pos_x": -1,
+            "pos_y": -1,
+            "color": [
+                193,
+                42,
+                169
+            ]
+        },
+        {
+            "id": 4,
+            "width": 100,
+            "height": 150,
+            "pos_x": -1,
+            "pos_y": -1,
+            "color": [
+                135,
+                5,
+                234
+            ]
+        },
+        {
+            "id": 5,
+            "width": 200,
+            "height": 100,
+            "pos_x": -1,
+            "pos_y": -1,
+            "color": [
+                18,
+                208,
+                15
+            ]
+        },
+        {
+            "id": 6,
+            "width": 50,
+            "height": 50,
+            "pos_x": -1,
+            "pos_y": -1,
+            "color": [
+                54,
+                234,
+                174
+            ]
+        }
+    ],
+    "socle": {
+        "pos_x": 0,
+        "pos_y": 0,
+        "width": 500,
+        "height": 500,
+        "pos_x_actuel": 0,
+        "pos_y_actuel": 0,
+        "rectangles": [],
+        "etages": []
+    }
+}
