@@ -9,16 +9,15 @@ class Socle:
         self.rectangles= []
         self.etages = []
 
-    def __init__(self, pos_x, pos_y, width, height, pos_x_actuel=0, pos_y_actuel=0, rectangles=None, etages=None, **kwargs):
+    def __init__(self, pos_x, pos_y, width, height, **kwargs):
         self.pos_x = pos_x
         self.pos_y = pos_y
         self.width = width
         self.height = height
-        self.pos_x_actuel = pos_x_actuel
-        self.pos_y_actuel = pos_y_actuel
-        self.rectangles = rectangles if rectangles is not None else []
-        self.etages = etages if etages is not None else []
-
+        self.pos_x_actuel = pos_x
+        self.pos_y_actuel = pos_y
+        self.rectangles= []
+        self.etages = []
 
     def add_rect(self, rect):
         self.rectangles.append(rect)

@@ -87,11 +87,7 @@ class Application(tk.Frame):
                     socle_data['pos_x'],
                     socle_data['pos_y'],
                     socle_data['width'],
-                    socle_data['height'],
-                    socle_data.get('pos_x_actuel', 0),
-                    socle_data.get('pos_y_actuel', 0),
-                    socle_data.get('rectangles', []),
-                    socle_data.get('etages', [])
+                    socle_data['height']
                 )
                 # Mettre à jour les champs d'entrée avec les valeurs du socle
                 self.entry_socle_width.delete(0, tk.END)
@@ -165,7 +161,7 @@ class Application(tk.Frame):
             if rect.pos_x != -1:
                 rect_color_hex = "#" + "".join([f"{x:02X}" for x in rect.color])
                 canvas.create_rectangle(rect.pos_x, rect.pos_y, rect.pos_x + rect.width, rect.pos_y + rect.height, fill=rect_color_hex, outline=rect_color_hex)
-                canvas.create_text(rect.pos_x + rect.width / 2, rect.pos_y + rect.height / 2, text=str(index + 1), font=("Arial", 5))
+                canvas.create_text(rect.pos_x + rect.width / 2, rect.pos_y + rect.height / 2, text=str(index + 1), font=("Arial", 10))
 
 if __name__ == "__main__":
     root = tk.Tk()
