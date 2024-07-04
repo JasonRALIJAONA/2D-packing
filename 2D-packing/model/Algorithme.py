@@ -1,4 +1,5 @@
 from util.Socle import Socle
+from itertools import permutations
 
 class Algorithme:
     def __init__(self) -> None:
@@ -88,9 +89,38 @@ class Algorithme:
                 if etage_choisi[1]!=float("inf"):
                     socle.etages[etage_choisi[0]].add_rect(rect[i])
 
-
     
-    def brut_force(self , rectangles , socle):
-        pass
+    def brut_force(self, rectangles, socle):
+        # Helper function to check if a rectangle fits within the socle without overlapping
+        def fits(rect, placed_rects, socle):
+            for pr in placed_rects:
+                if not (rect.pos_x + rect.width <= pr.pos_x or rect.pos_x >= pr.pos_x + pr.width or
+                        rect.pos_y + rect.height <= pr.pos_y or rect.pos_y >= pr.pos_y + pr.height):
+                    return False  # Overlaps with an already placed rectangle
+            return rect.pos_x + rect.width <= socle.width and rect.pos_y + rect.height <= socle.height
+    
+        # Try each permutation of rectangles
+        for perm in permutations(rectangles):
+            placed_rects = []
+            success = True
+            for rect in perm:
+                # Try placing the rectangle in the first position where it fits
+                for x in range(socle.width - rect.width + 1):
+                    for y in range(socle.height - rect.height + 1):
+                        rect.pos_x, rect.pos_y = x, y
+                        if fits(rect, placed_rects, socle):
+                            placed_rects.append(rect)
+                            break
+                    else:
+                        continue
+                    break
+                else:
+                    success = False
+                    break
+    
+            if success:
+                return placed_rects  # Found a successful arrangement
+    
+        return None  # No arrangement found
                 
                 
