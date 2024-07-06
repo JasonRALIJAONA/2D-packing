@@ -153,7 +153,7 @@ class Algorithme:
                         for y in range(socle.height - rect.height + 1):
                             rect.pos_x, rect.pos_y = x, y
                             if Algorithme.fits(rect, placed_rects, socle):
-                                rect_copy = Rectangle(rect.id, original_width, original_height, x, y, rect.color)
+                                rect_copy = Rectangle(rect.id, rect.width, rect.height, x, y, rect.color)
                                 placed_rects.append(rect_copy)  # Assume there's a method to copy the rectangle
                                 break
                         else:
