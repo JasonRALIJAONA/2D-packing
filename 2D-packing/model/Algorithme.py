@@ -1,5 +1,6 @@
 from util.Socle import Socle
-from itertools import permutations
+from itertools import permutations , product
+from util.Rectangle import Rectangle
 
 class Algorithme:
     def __init__(self) -> None:
@@ -89,16 +90,17 @@ class Algorithme:
                 if etage_choisi[1]!=float("inf"):
                     socle.etages[etage_choisi[0]].add_rect(rect[i])
 
+    @staticmethod
+    def fits(rect, placed_rects, socle):
+        for pr in placed_rects:
+            if not (rect.pos_x + rect.width <= pr.pos_x or rect.pos_x >= pr.pos_x + pr.width or
+                    rect.pos_y + rect.height <= pr.pos_y or rect.pos_y >= pr.pos_y + pr.height):
+                return False  # Overlaps with an already placed rectangle
+        return rect.pos_x + rect.width <= socle.width and rect.pos_y + rect.height <= socle.height
+    
+
     
     def brut_force(self, rectangles, socle):
-        # Helper function to check if a rectangle fits within the socle without overlapping
-        def fits(rect, placed_rects, socle):
-            for pr in placed_rects:
-                if not (rect.pos_x + rect.width <= pr.pos_x or rect.pos_x >= pr.pos_x + pr.width or
-                        rect.pos_y + rect.height <= pr.pos_y or rect.pos_y >= pr.pos_y + pr.height):
-                    return False  # Overlaps with an already placed rectangle
-            return rect.pos_x + rect.width <= socle.width and rect.pos_y + rect.height <= socle.height
-    
         # Try each permutation of rectangles
         for perm in permutations(rectangles):
             placed_rects = []
@@ -108,7 +110,7 @@ class Algorithme:
                 for x in range(socle.width - rect.width + 1):
                     for y in range(socle.height - rect.height + 1):
                         rect.pos_x, rect.pos_y = x, y
-                        if fits(rect, placed_rects, socle):
+                        if Algorithme.fits(rect, placed_rects, socle):
                             placed_rects.append(rect)
                             break
                     else:
@@ -128,5 +130,56 @@ class Algorithme:
                     org_rec.pos_x = rec.pos_x
                     org_rec.pos_y = rec.pos_y
                     break
+
+    def brut_force_rotate(self ,rectangles, socle):
+        finished=False
+        for perm in permutations(rectangles):
+            if finished:
+                break
+            # Each element in orientations is a tuple of booleans representing whether to rotate each rectangle
+            for orientations in product([False, True], repeat=len(rectangles)):
+                if finished:
+                    break
+                placed_rects = []
+                success = True
+                for rect, rotate in zip(perm, orientations):
+                    original_width, original_height = rect.width, rect.height
+                    # Rotate the rectangle if specified
+                    if rotate:
+                        rect.rotate()
+                    
+                    # Try placing the rectangle in the first position where it fits
+                    for x in range(socle.width - rect.width + 1):
+                        for y in range(socle.height - rect.height + 1):
+                            rect.pos_x, rect.pos_y = x, y
+                            if Algorithme.fits(rect, placed_rects, socle):
+                                rect_copy = Rectangle(rect.id, original_width, original_height, x, y, rect.color)
+                                placed_rects.append(rect_copy)  # Assume there's a method to copy the rectangle
+                                break
+                        else:
+                            continue
+                        break
+                    else:
+                        success = False
+                        # Reset the rectangle to its original orientation if it was rotated
+                        rect.rotate()
+                        break
+                    
+                    # Reset the rectangle to its original orientation for the next iteration
+                    if rotate:
+                        rect.rotate()
+
+                if success:
+                    finished = True
+                    break
                 
+        for rec in placed_rects:
+            for org_rec in rectangles:
+                if rec.id == org_rec.id:
+                    org_rec.pos_x = rec.pos_x
+                    org_rec.pos_y = rec.pos_y
+                    break
+
+        
+                   
                 
