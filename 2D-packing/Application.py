@@ -10,7 +10,7 @@ class Application(tk.Frame):
         super().__init__(master)
         self.master = master
         self.master.title("Formulaire")
-        self.master.geometry("400x800")
+        self.master.geometry("600x800")
         self.pack(padx=10, pady=10)
         
         self.rectangles = []
@@ -70,7 +70,7 @@ class Application(tk.Frame):
 
         self.label_algorithm = ttk.Label(algorithm_frame, text="Choisir l'algorithme:")
         self.label_algorithm.pack(pady=5)
-        self.algorithm_combobox = ttk.Combobox(algorithm_frame, values=["Next_fit", "First_fit", "Best_fit", "Brut_force"])
+        self.algorithm_combobox = ttk.Combobox(algorithm_frame, values=["Next_fit", "First_fit", "Best_fit", "Brut_force", "Brut_force_rotate"])
         self.algorithm_combobox.current(0)
         self.algorithm_combobox.pack(pady=5)
 
@@ -145,7 +145,7 @@ class Application(tk.Frame):
         # Mise à jour du texte de résultat
         self.result_text.delete('1.0', tk.END)
         for rect in self.rectangles:
-            self.result_text.insert(tk.END, f"Rectangle {rect.id}: ({rect.pos_x}, {rect.pos_y})\n")
+            self.result_text.insert(tk.END, f"({rect.id}) x: {rect.pos_x}  ,  y: {rect.pos_y} , width: {rect.width} , height: {rect.height}\n")
 
     def execute_algorithm(self):
         # Exécution de l'algorithme sélectionné
@@ -159,10 +159,11 @@ class Application(tk.Frame):
             algo.best_fit_dh(self.rectangles, self.socle)
         elif algorithm_name == "Brut_force":
             algo.brut_force(self.rectangles, self.socle)
+        elif algorithm_name == "Brut_force_rotate":
+            algo.brut_force_rotate(self.rectangles, self.socle)
         else:
             self.result_text.insert(tk.END, "Algorithme non trouvé.\n")
             return
-        self.load_data
         self.update_result_text()
         self.draw_canvas(algorithm_name)
 
