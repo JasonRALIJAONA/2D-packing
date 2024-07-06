@@ -10,7 +10,7 @@ class Application(tk.Frame):
         super().__init__(master)
         self.master = master
         self.master.title("Formulaire")
-        self.master.geometry("400x800")
+        self.master.geometry("600x800")
         self.pack(padx=10, pady=10)
         
         self.rectangles = []
@@ -145,7 +145,7 @@ class Application(tk.Frame):
         # Mise à jour du texte de résultat
         self.result_text.delete('1.0', tk.END)
         for rect in self.rectangles:
-            self.result_text.insert(tk.END, f"Rectangle {rect.id}: ({rect.pos_x}, {rect.pos_y})\n")
+            self.result_text.insert(tk.END, f"({rect.id}) x: {rect.pos_x}  ,  y: {rect.pos_y} , width: {rect.width} , height: {rect.height}\n")
 
     def execute_algorithm(self):
         # Exécution de l'algorithme sélectionné
@@ -162,7 +162,6 @@ class Application(tk.Frame):
         else:
             self.result_text.insert(tk.END, "Algorithme non trouvé.\n")
             return
-        self.load_data
         self.update_result_text()
         self.draw_canvas(algorithm_name)
 
