@@ -18,3 +18,6 @@ class Rectangle:
         self.pos_x = pos_x
         self.pos_y = pos_y
         self.color = (random.randint(0,255),random.randint(0,255),random.randint(0,255))
+
+    def rotate(self):
+        self.width, self.height = self.height, self.width
