@@ -188,8 +188,12 @@ class Application(tk.Frame):
         for index, rect in enumerate(self.rectangles):
             if rect.pos_x != -1:
                 rect_color_hex = "#" + "".join([f"{x:02X}" for x in rect.color])
-                canvas.create_rectangle(rect.pos_x, rect.pos_y, rect.pos_x + rect.width, rect.pos_y + rect.height, fill=rect_color_hex, outline=rect_color_hex)
-                canvas.create_text(rect.pos_x + rect.width / 2, rect.pos_y + rect.height / 2, text=str(index + 1), font=("Arial", 12))
+                
+                # Inverser l'axe y
+                pos_y = socle_height - rect.pos_y - rect.height
+                
+                canvas.create_rectangle(rect.pos_x, pos_y, rect.pos_x + rect.width, pos_y + rect.height, fill=rect_color_hex, outline=rect_color_hex)
+                canvas.create_text(rect.pos_x + rect.width / 2, pos_y + rect.height / 2, text=str(index + 1), font=("Arial", 12))
 
 if __name__ == "__main__":
     root = tk.Tk()
