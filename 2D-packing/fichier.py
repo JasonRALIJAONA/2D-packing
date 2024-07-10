@@ -15,6 +15,7 @@ class Application(tk.Frame):
         self.pack(padx=10, pady=10)
         
         self.rectangles = []
+        self.rectangles_initial = [] 
         self.socle = None
 
         self.create_socle_form()
@@ -105,6 +106,7 @@ class Application(tk.Frame):
                     Rectangle(item['id'], item['width'], item['height'], item.get('pos_x', -1), item.get('pos_y', -1), item.get('color', (0, 0, 0)))
                     for item in data['rectangles']
                 ]
+                self.rectangles_initial = copy.deepcopy(self.rectangles)
                 socle_data = data['socle']
                 self.socle = Socle(
                     socle_data['pos_x'],
@@ -122,6 +124,10 @@ class Application(tk.Frame):
         except KeyError as e:
             self.result_text.insert(tk.END, f"Erreur lors du chargement des données: clé manquante {e}\n")
 
+    def restore_initial_positions(self):
+        # Restaurer les positions initiales des rectangles
+        self.rectangles = copy.deepcopy(self.rectangles_initial)
+
     def add_rectangle(self):
         # Ajout d'un rectangle à la liste
         try:
@@ -129,6 +135,7 @@ class Application(tk.Frame):
             height = int(self.entry_height.get())
             rectangle = Rectangle(len(self.rectangles) + 1, width, height)
             self.rectangles.append(rectangle)
+            self.rectangles_initial = copy.deepcopy(self.rectangles)
             self.update_result_text()
         except ValueError:
             self.result_text.insert(tk.END, "Erreur: Veuillez entrer des nombres valides pour la largeur et la hauteur des rectangles.\n")
@@ -149,13 +156,19 @@ class Application(tk.Frame):
             self.result_text.insert(tk.END, f"({rect.id}) x: {rect.pos_x}  ,  y: {rect.pos_y} , width: {rect.width} , height: {rect.height}\n")
 
     def execute_algorithm(self):
+        # Restaurer les positions initiales des rectangles
+        self.restore_initial_positions()
+
         # Exécution de l'algorithme sélectionné
         algorithm_name = self.algorithm_combobox.get()
         algo = Algorithme()
         
         # Créer une copie des rectangles
         rectangles_copy = copy.deepcopy(self.rectangles)
-
+        
+        for rect in rectangles_copy:
+            print(rect.pos_x)
+        
         if algorithm_name == "Next_fit":
             algo.next_fit_dh(rectangles_copy, self.socle)
         elif algorithm_name == "First_fit":
@@ -169,7 +182,7 @@ class Application(tk.Frame):
         else:
             self.result_text.insert(tk.END, "Algorithme non trouvé.\n")
             return
-        
+
         self.update_result_text_copy(rectangles_copy)
         self.draw_canvas(rectangles_copy, algorithm_name)
 
@@ -198,10 +211,10 @@ class Application(tk.Frame):
         canvas.create_rectangle(0, 0, socle_width, socle_height, fill=socle_color, outline=socle_color)
 
         for index, rect in enumerate(rectangles_copy):
-            if rect.pos_x != -1:
-                rect_color_hex = "#" + "".join([f"{x:02X}" for x in rect.color])
-                canvas.create_rectangle(rect.pos_x, rect.pos_y, rect.pos_x + rect.width, rect.pos_y + rect.height, fill=rect_color_hex, outline=rect_color_hex)
-                canvas.create_text(rect.pos_x + rect.width / 2, rect.pos_y + rect.height / 2, text=str(index + 1), font=("Arial", 12))
+            # if rect.pos_x != -1:
+            rect_color_hex = "#" + "".join([f"{x:02X}" for x in rect.color])
+            canvas.create_rectangle(rect.pos_x, rect.pos_y, rect.pos_x + rect.width, rect.pos_y + rect.height, fill=rect_color_hex, outline=rect_color_hex)
+            canvas.create_text(rect.pos_x + rect.width / 2, rect.pos_y + rect.height / 2, text=str(index + 1), font=("Arial", 12))
 
 if __name__ == "__main__":
     root = tk.Tk()
