@@ -3,7 +3,7 @@ import random
 from shapely.geometry import Polygon
 
 class Triangle:
-    def __init__(self,id ,base):
+    def __init__(self,id ,base, **kwargs):
         self.id = id
         self.width = base
         self.height = (math.sqrt(3)/2)*base
@@ -21,10 +21,10 @@ class Triangle:
         return Polygon([A,B,C])
 
 
-    def __init__(self, id, base, pos_x=-1, pos_y=-1, color=(0, 0, 0), **kwargs):
-        self.id = id
-        self.width = base
-        self.pos_x = pos_x
-        self.pos_y = pos_y
-        self.perimetre = self.cree_perimetre()
-        self.color = (random.randint(0,255),random.randint(0,255),random.randint(0,255))
+    # def __init__(self, id, base, pos_x=-1, pos_y=-1, color=(0, 0, 0), **kwargs):
+    #     self.id = id
+    #     self.width = base
+    #     self.pos_x = pos_x
+    #     self.pos_y = pos_y
+    #     self.perimetre = self.cree_perimetre()
+    #     self.color = (random.randint(0,255),random.randint(0,255),random.randint(0,255))

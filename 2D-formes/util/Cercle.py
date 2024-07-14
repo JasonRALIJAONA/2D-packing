@@ -3,7 +3,7 @@ from shapely.geometry import Point
 
 # cx : centre x
 class Cercle:
-    def __init__(self,id,rayon):
+    def __init__(self,id,rayon, **kwargs):
         self.id = id
         self.pos_x = -1
         self.pos_y = -1
