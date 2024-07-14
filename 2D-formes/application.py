@@ -1,6 +1,7 @@
 import tkinter as tk
 import json
 from tkinter import ttk
+from shapely.geometry import Polygon
 from util.Rectangle import Rectangle
 from util.Cercle import Cercle
 from util.Triangle import Triangle
@@ -90,54 +91,83 @@ class Application(tk.Frame):
         self.result_text = tk.Text(self, wrap=tk.WORD, height=10)
         self.result_text.pack(pady=10)
 
+    def polygon_to_serializable(self, polygon):
+        return list(polygon.exterior.coords)
+
     def save_data(self):
         data = {
-            "rectangles": [rect.__dict__ for rect in self.rectangles],
-            "cercles": [cercle.__dict__ for cercle in self.cercles],
-            "triangles": [triangle.__dict__ for triangle in self.triangles],
+            "rectangles": [
+                {**rect.__dict__, "perimetre": self.polygon_to_serializable(rect.perimetre)} for rect in self.rectangles
+            ],
+            "cercles": [
+                {**cercle.__dict__, "perimetre": self.polygon_to_serializable(cercle.perimetre)} for cercle in self.cercles
+            ],
+            "triangles": [
+                {**triangle.__dict__, "perimetre": self.polygon_to_serializable(triangle.perimetre)} for triangle in self.triangles
+            ],
             "socle": self.socle.__dict__ if self.socle else None,
         }
-        with open('data.json', 'w') as file:
-            json.dump(data, file)
+        with open('data2.json', 'w') as file:
+            json.dump(data, file, indent=4)
         self.result_text.insert(tk.END, "Données sauvegardées avec succès.\n")
-            
+
+    def serializable_to_polygon(self, coords):
+        return Polygon(coords)  
+
     def load_data(self):
-        try:
-            with open('data.json', 'r') as file:
-                data = json.load(file)
-                self.rectangles = [
-                    Rectangle(item['id'], item['width'], item['height'], item.get('pos_x', -1), item.get('pos_y', -1), item.get('color', (0, 0, 0)))
-                    for item in data['rectangles']
-                ]
-                self.cercles = [
-                    Cercle(item['id'], item['rayon'], item.get('pos_x', -1), item.get('pos_y', -1), item.get('color', (0, 0, 0)))
-                    for item in data['cercles']
-                ]
-                self.triangles = [
-                    Triangle(item['id'], item['width'], item.get('pos_x', -1), item.get('pos_y', -1), item.get('color', (0, 0, 0)))
-                    for item in data['triangles']
-                ]
-                socle_data = data['socle']
-                self.socle = Socle(
-                    socle_data['pos_x'],
-                    socle_data['pos_y'],
-                    socle_data['width'],
-                    socle_data['height'],
-                    socle_data.get('pos_x_actuel', 0),
-                    socle_data.get('pos_y_actuel', 0),
-                    socle_data.get('rectangles', []),
-                    socle_data.get('etages', [])
-                )
-                # Mettre à jour les champs d'entrée avec les valeurs du socle
-                self.entry_socle_width.delete(0, tk.END)
-                self.entry_socle_width.insert(0, str(socle_data['width']))
-                self.entry_socle_height.delete(0, tk.END)
-                self.entry_socle_height.insert(0, str(socle_data['height']))
-                self.update_result_text()
-        except FileNotFoundError:
-            self.result_text.insert(tk.END, "Le fichier de données n'a pas été trouvé.\n")
-        except KeyError as e:
-            self.result_text.insert(tk.END, f"Erreur lors du chargement des données: clé manquante {e}\n")
+        with open('data2.json', 'r') as file:
+            data = json.load(file)
+
+        self.rectangles = [
+            Rectangle(
+                rect['id'],
+                rect['width'],
+                rect['height'],
+                pos_x=rect['pos_x'],
+                pos_y=rect['pos_y'],
+                color=rect['color'],
+                perimetre=self.serializable_to_polygon(rect['perimetre'])
+            ) for rect in data['rectangles']
+        ]
+
+        self.cercles = [
+            Cercle(
+                cercle['id'],
+                rayon=cercle['rayon'],
+                pos_x=cercle['pos_x'],
+                pos_y=cercle['pos_y'],
+                color=cercle['color'],
+                perimetre=self.serializable_to_polygon(cercle['perimetre'])
+            ) for cercle in data['cercles']
+        ]
+
+        self.triangles = [
+            Triangle(
+                triangle['id'],
+                base=triangle['width'],
+                pos_x=triangle['pos_x'],
+                pos_y=triangle['pos_y'],
+                color=triangle['color'],
+                perimetre=self.serializable_to_polygon(triangle['perimetre'])
+            ) for triangle in data['triangles']
+        ]
+
+        socle_data = data['socle']
+        self.socle = Socle(
+            socle_data['pos_x'],
+            socle_data['pos_y'],
+            socle_data['width'],
+            socle_data['height']
+        )
+        self.entry_socle_width.delete(0, tk.END)
+        self.entry_socle_width.insert(0, str(socle_data['width']))
+        self.entry_socle_height.delete(0, tk.END)
+        self.entry_socle_height.insert(0, str(socle_data['height']))
+        self.update_result_text()
+
+        self.result_text.insert(tk.END, "Données chargées avec succès.\n")
+
+
 
     def add_rectangle(self):
         if not self.socle:
