@@ -258,17 +258,17 @@ class Application(tk.Frame):
 
         # Dessiner les rectangles
         for rect in self.rectangles:
-            if rect.pos_x > 0:
+            if rect.pos_x >= 0:
                 draw_shape(rect, get_hex_color(rect.color))
 
         # Dessiner les cercles
         for cercle in self.cercles:
-            if cercle.pos_x > 0:
+            if cercle.pos_x >= 0:
                 draw_shape(cercle, get_hex_color(cercle.color))
 
         # Dessiner les triangles
         for triangle in self.triangles:
-            if triangle.pos_x > 0:
+            if triangle.pos_x >= 0:
                 draw_shape(triangle, get_hex_color(triangle.color))
 
 
