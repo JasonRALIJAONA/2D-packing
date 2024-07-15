@@ -58,5 +58,47 @@ class Algorithme:
                     form.pos_y = placed.pos_y
                     form.perimetre = placed.perimetre
                     break
-        
-        
+    
+    def brut_force_rotate(self, formes, socle):
+        finished = False
+        for perm in permutations(formes):
+            if finished:
+                break
+            # Each element in orientations is a tuple of integers (0, 90, 180) representing the rotation angle for each rectangle
+            for orientations in product([0, 90, 180], repeat=len(formes)):
+                if finished:
+                    break
+                placed_rects = []
+                success = True
+                for rect, rotation_angle in zip(perm, orientations):
+                    # Rotate the rectangle based on the specified angle
+                    rect = rect.rotate(rotation_angle)
+                    
+                    # Try placing the rectangle in the first position where it fits
+                    for x in range(socle.width - rect.width + 1):
+                        for y in range(socle.height - rect.height + 1):
+                            rect.pos_x, rect.pos_y = x, y
+                            if Algorithme.fits(rect.perimetre, placed_rects, socle):
+                                form_copy = rect.copy()
+                                placed_rects.append(form_copy)  # Assume there's a method to copy the rectangle
+                                break
+                        else:
+                            continue
+                        break
+                    else:
+                        success = False
+                        break
+
+                if success:
+                    # Successfully placed all rectangles, can finish
+                    finished = True
+                    # Here, you might want to do something with the successful placement, like storing it or printing it
+                    break
+
+        for placed in placed_rects:
+            for form in formes:
+                if placed.id == form.id:
+                    form.pos_x = placed.pos_x
+                    form.pos_y = placed.pos_y
+                    form.perimetre = placed.perimetre
+                    break
