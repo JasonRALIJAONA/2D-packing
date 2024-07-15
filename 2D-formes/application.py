@@ -97,15 +97,15 @@ class Application(tk.Frame):
     def save_data(self):
         data = {
             "rectangles": [
-                {**rect.__dict__, "perimetre": self.polygon_to_serializable(rect.perimetre)} for rect in self.rectangles
+                {key: value for key, value in rect.__dict__.items() if key != 'perimetre'} for rect in self.rectangles
             ],
             "cercles": [
-                {**cercle.__dict__, "perimetre": self.polygon_to_serializable(cercle.perimetre)} for cercle in self.cercles
+                {key: value for key, value in cercle.__dict__.items() if key != 'perimetre'} for cercle in self.cercles
             ],
             "triangles": [
-                {**triangle.__dict__, "perimetre": self.polygon_to_serializable(triangle.perimetre)} for triangle in self.triangles
+                {key: value for key, value in triangle.__dict__.items() if key != 'perimetre'} for triangle in self.triangles
             ],
-            "socle": self.socle.__dict__ if self.socle else None,
+            "socle": {key: value for key, value in self.socle.__dict__.items() if key != 'perimetre'} if self.socle else None,
         }
         with open('data2.json', 'w') as file:
             json.dump(data, file, indent=4)
@@ -125,10 +125,11 @@ class Application(tk.Frame):
                 rect['height'],
                 pos_x=rect['pos_x'],
                 pos_y=rect['pos_y'],
-                color=rect['color'],
-                perimetre=self.serializable_to_polygon(rect['perimetre'])
+                color=rect['color']
             ) for rect in data['rectangles']
         ]
+        for rect in self.rectangles:
+            rect.perimetre = rect.cree_perimetre()
 
         self.cercles = [
             Cercle(
@@ -136,10 +137,11 @@ class Application(tk.Frame):
                 rayon=cercle['rayon'],
                 pos_x=cercle['pos_x'],
                 pos_y=cercle['pos_y'],
-                color=cercle['color'],
-                perimetre=self.serializable_to_polygon(cercle['perimetre'])
+                color=cercle['color']
             ) for cercle in data['cercles']
         ]
+        for cercle in self.cercles:
+            cercle.perimetre = cercle.cree_perimetre()
 
         self.triangles = [
             Triangle(
@@ -147,10 +149,11 @@ class Application(tk.Frame):
                 base=triangle['width'],
                 pos_x=triangle['pos_x'],
                 pos_y=triangle['pos_y'],
-                color=triangle['color'],
-                perimetre=self.serializable_to_polygon(triangle['perimetre'])
+                color=triangle['color']
             ) for triangle in data['triangles']
         ]
+        for triangle in self.triangles:
+            triangle.perimetre = triangle.cree_perimetre()
 
         socle_data = data['socle']
         self.socle = Socle(
@@ -244,26 +247,29 @@ class Application(tk.Frame):
         def get_hex_color(color):
             return "#" + "".join([f"{x:02X}" for x in color])
 
-        def draw_shape(perimetre, color):
-            coords = list(perimetre.exterior.coords)
-            # print(perimetre)
+        def draw_shape(shape, color):
+            coords = list(shape.perimetre.exterior.coords)
             coords_flat = [coord for point in coords for coord in point]
             canvas.create_polygon(coords_flat, fill=color, outline=color)
+            
+            # Calculer le centre de la forme pour y placer l'ID
+            center_x, center_y = shape.perimetre.centroid.x, shape.perimetre.centroid.y
+            canvas.create_text(center_x, center_y, text=str(shape.id), fill='black')
 
         # Dessiner les rectangles
         for rect in self.rectangles:
             if rect.pos_x != -1:
-                draw_shape(rect.perimetre, get_hex_color(rect.color))
+                draw_shape(rect, get_hex_color(rect.color))
 
         # Dessiner les cercles
         for cercle in self.cercles:
             if cercle.pos_x != -1:
-                draw_shape(cercle.perimetre, get_hex_color(cercle.color))
+                draw_shape(cercle, get_hex_color(cercle.color))
 
         # Dessiner les triangles
         for triangle in self.triangles:
             if triangle.pos_x != -1:
-                draw_shape(triangle.perimetre, get_hex_color(triangle.color))
+                draw_shape(triangle, get_hex_color(triangle.color))
 
 
 if __name__ == "__main__":
