@@ -6,7 +6,7 @@ class Triangle:
     def __init__(self,id ,base, **kwargs):
         self.id = id
         self.width = base
-        self.height = (math.sqrt(3)/2)*base
+        self.height = (int)(math.sqrt(3)/2)*base
         self.pos_x = -1
         self.pos_y = -1
         self.perimetre = self.cree_perimetre()
@@ -20,6 +20,8 @@ class Triangle:
 
         return Polygon([A,B,C])
 
+    def copy(self):
+        return Triangle(self.id, self.width)
 
     # def __init__(self, id, base, pos_x=-1, pos_y=-1, color=(0, 0, 0), **kwargs):
     #     self.id = id

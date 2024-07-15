@@ -14,6 +14,9 @@ class Rectangle:
 
     def cree_perimetre(self):
         return box(self.pos_x, self.pos_y, self.pos_x + self.width, self.pos_y + self.height)
+    
+    def copy(self):
+        return Rectangle(self.id, self.width, self.height)
 
     def __init__(self, id, width, height, pos_x=-1, pos_y=-1, color=(0, 0, 0), **kwargs):
         self.id = id

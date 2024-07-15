@@ -16,4 +16,6 @@ algo = Algorithme()
 algo.brut_force(formes,socle)
 
 for forme in formes:
-    print(f"({forme.id}) : x : {forme.pos_x} , y : {forme.pos_y} , rayon : {forme.rayon}")
+    print(f"({forme.id}) : x : {forme.pos_x} , y : {forme.pos_y} , rayon : {forme.width}")
+
+
