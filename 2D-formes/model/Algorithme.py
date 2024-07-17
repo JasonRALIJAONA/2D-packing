@@ -10,38 +10,38 @@ class Algorithme:
     def __init__(self) -> None:
         pass
 
-    # @staticmethod
-    # def fits(forme, polygon_place, socle):
-    #     # Check if the forme is within the socle boundaries
-    #     if not forme.within(Polygon([(socle.pos_x, socle.pos_y), (socle.pos_x + socle.width, socle.pos_y), (socle.pos_x + socle.width, socle.pos_y + socle.height), (socle.pos_x, socle.pos_y + socle.height)])):
-    #         return False
-
-    #     # Combine all placed polygons into a single union polygon for efficient overlap checking
-    #     if polygon_place:
-    #         placed_union = unary_union([pp.perimetre for pp in polygon_place])
-    #         # Check if the forme intersects with the placed_union
-    #         if forme.intersects(placed_union):
-    #             # If forme only touches the placed_union (shares a boundary without overlapping), it's not considered an intersection
-    #             if forme.touches(placed_union):
-    #                 return True
-    #             return False
-    #     # If there are no placed polygons, no need to check for intersection
-    #     return True
-    
     @staticmethod
-    def fits(forme, placed_polygons, socle):
-        socle_polygon = Polygon([(socle.pos_x, socle.pos_y), 
-                                 (socle.pos_x + socle.width, socle.pos_y), 
-                                 (socle.pos_x + socle.width, socle.pos_y + socle.height), 
-                                 (socle.pos_x, socle.pos_y + socle.height)])
-        if not forme.within(socle_polygon):
+    def fits(forme, polygon_place, socle):
+        # Check if the forme is within the socle boundaries
+        if not forme.within(Polygon([(socle.pos_x, socle.pos_y), (socle.pos_x + socle.width, socle.pos_y), (socle.pos_x + socle.width, socle.pos_y + socle.height), (socle.pos_x, socle.pos_y + socle.height)])):
             return False
-        
-        for pp in placed_polygons:
-            if forme.intersects(pp.perimetre):
+
+        # Combine all placed polygons into a single union polygon for efficient overlap checking
+        if polygon_place:
+            placed_union = unary_union([pp.perimetre for pp in polygon_place])
+            # Check if the forme intersects with the placed_union
+            if forme.intersects(placed_union):
+                # If forme only touches the placed_union (shares a boundary without overlapping), it's not considered an intersection
+                if forme.touches(placed_union):
+                    return True
                 return False
-            
+        # If there are no placed polygons, no need to check for intersection
         return True
+    
+    # @staticmethod
+    # def fits(forme, placed_polygons, socle):
+    #     socle_polygon = Polygon([(socle.pos_x, socle.pos_y), 
+    #                              (socle.pos_x + socle.width, socle.pos_y), 
+    #                              (socle.pos_x + socle.width, socle.pos_y + socle.height), 
+    #                              (socle.pos_x, socle.pos_y + socle.height)])
+    #     if not forme.within(socle_polygon):
+    #         return False
+        
+    #     for pp in placed_polygons:
+    #         if forme.intersects(pp.perimetre):
+    #             return False
+            
+    #     return True
     
     def heuristic(self, formes, socle):
         formes.sort(key=lambda f: max(f.width, f.height), reverse=True)
