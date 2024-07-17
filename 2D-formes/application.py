@@ -82,7 +82,7 @@ class Application(tk.Frame):
         ttk.Button(self.frame_shapes, text="Ajouter Triangle", command=self.add_triangle).grid(row=7, column=0, columnspan=2, pady=5)
 
         ttk.Label(self.frame_shapes, text="Choisir l'algorithme:").grid(row=8, column=0, columnspan=2, pady=10)
-        self.algorithm_combobox = ttk.Combobox(self.frame_shapes, values=["Brut_force"])
+        self.algorithm_combobox = ttk.Combobox(self.frame_shapes, values=["Heuristique", "Brut_force"])
         self.algorithm_combobox.current(0)
         self.algorithm_combobox.grid(row=9, column=0, columnspan=2)
 
@@ -223,6 +223,8 @@ class Application(tk.Frame):
 
         if algorithm_name == "Brut_force":
             Algorithme().brut_force(formes, self.socle)
+        elif algorithm_name == "Heuristique":
+            Algorithme().heuristic(formes , self.socle)
 
         self.update_result_text()
         self.draw_canvas(f"Disposition avec {algorithm_name}")
