@@ -58,5 +58,46 @@ class Algorithme:
                     form.pos_y = placed.pos_y
                     form.perimetre = placed.perimetre
                     break
-        
-        
+    
+    def brut_force_rotate(self, formes, socle):
+        j=0
+        finished = False
+        for perm in permutations(formes):
+            if finished:
+                break
+            # Each element in orientations is a tuple of integers (0, 90, 180) representing the rotation angle for each shape
+            for orientations in product([0,90,180], repeat=len(formes)):
+                if finished:
+                    break
+                placed_forms = []
+                success = True
+                for form, rotation_angle in zip(perm, orientations):
+                    # Rotate the rectangle based on the specified angle
+                    form = form.rotate(rotation_angle)
+                    
+                    # Try placing the rectangle in the first position where it fits
+                    for x in range(socle.width - form.width + 1):
+                        for y in range(socle.height - form.height + 1):
+                            form.pos_x, form.pos_y = x, y
+                            form.perimetre = form.cree_perimetre()
+                            if Algorithme.fits(form.perimetre, placed_forms, socle):
+                                form_copy = form.copy()
+                                placed_forms.append(form_copy)  # Assume there's a method to copy the shape
+                                break
+                        else:
+                            continue
+                        break
+                    else:
+                        success = False
+                        break
+
+                if success:
+                    # Successfully placed all rectangles, can finish
+                    finished = True
+                    # Here, you might want to do something with the successful placement, like storing it or printing it
+                    break
+                # to count the number of iterations
+                print(j)
+                j+=1
+
+        return placed_forms
