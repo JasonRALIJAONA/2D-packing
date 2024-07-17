@@ -10,12 +10,12 @@ class Cercle:
         self.rayon = rayon
         self.width = rayon
         self.height = rayon
-        self.perimetre = self.cree_perimetre()
+        self.perimetre = self.cree_perimetre(0)
         # a random color
         self.color = (random.randint(0,255),random.randint(0,255),random.randint(0,255))
 
 
-    def cree_perimetre(self):
+    def cree_perimetre(self , angle):
         centre=Point(self.pos_x,self.pos_y)
         return centre.buffer(self.rayon)
     
