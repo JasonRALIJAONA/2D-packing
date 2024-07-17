@@ -60,27 +60,29 @@ class Algorithme:
                     break
     
     def brut_force_rotate(self, formes, socle):
+        j=0
         finished = False
         for perm in permutations(formes):
             if finished:
                 break
-            # Each element in orientations is a tuple of integers (0, 90, 180) representing the rotation angle for each rectangle
-            for orientations in product([0, 90, 180], repeat=len(formes)):
+            # Each element in orientations is a tuple of integers (0, 90, 180) representing the rotation angle for each shape
+            for orientations in product([0,90,180], repeat=len(formes)):
                 if finished:
                     break
-                placed_rects = []
+                placed_forms = []
                 success = True
-                for rect, rotation_angle in zip(perm, orientations):
+                for form, rotation_angle in zip(perm, orientations):
                     # Rotate the rectangle based on the specified angle
-                    rect = rect.rotate(rotation_angle)
+                    form = form.rotate(rotation_angle)
                     
                     # Try placing the rectangle in the first position where it fits
-                    for x in range(socle.width - rect.width + 1):
-                        for y in range(socle.height - rect.height + 1):
-                            rect.pos_x, rect.pos_y = x, y
-                            if Algorithme.fits(rect.perimetre, placed_rects, socle):
-                                form_copy = rect.copy()
-                                placed_rects.append(form_copy)  # Assume there's a method to copy the rectangle
+                    for x in range(socle.width - form.width + 1):
+                        for y in range(socle.height - form.height + 1):
+                            form.pos_x, form.pos_y = x, y
+                            form.perimetre = form.cree_perimetre()
+                            if Algorithme.fits(form.perimetre, placed_forms, socle):
+                                form_copy = form.copy()
+                                placed_forms.append(form_copy)  # Assume there's a method to copy the shape
                                 break
                         else:
                             continue
@@ -94,11 +96,8 @@ class Algorithme:
                     finished = True
                     # Here, you might want to do something with the successful placement, like storing it or printing it
                     break
+                # to count the number of iterations
+                print(j)
+                j+=1
 
-        for placed in placed_rects:
-            for form in formes:
-                if placed.id == form.id:
-                    form.pos_x = placed.pos_x
-                    form.pos_y = placed.pos_y
-                    form.perimetre = placed.perimetre
-                    break
+        return placed_forms
