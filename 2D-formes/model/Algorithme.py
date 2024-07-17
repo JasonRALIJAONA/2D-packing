@@ -60,7 +60,7 @@ class Algorithme:
                     break
     
     def brut_force_rotate(self, formes, socle):
-        j=0
+        # j=0
         finished = False
         for perm in permutations(formes):
             if finished:
@@ -97,7 +97,13 @@ class Algorithme:
                     # Here, you might want to do something with the successful placement, like storing it or printing it
                     break
                 # to count the number of iterations
-                print(j)
-                j+=1
+                # print(j)
+                # j+=1
 
-        return placed_forms
+        for placed in placed_forms:
+            for form in formes:
+                if placed.id == form.id:
+                    form.pos_x = placed.pos_x
+                    form.pos_y = placed.pos_y
+                    form.perimetre = placed.perimetre
+                    break
