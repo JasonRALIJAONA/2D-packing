@@ -8,12 +8,10 @@ from util.Triangle import Triangle
 formes = []
 socle = Socle(0,0,100,100)
 
-formes.append(Rectangle(1,30,50))
-formes.append(Rectangle(2,20,40))
-formes.append(Rectangle(3,55,30))
-formes.append(Rectangle(4,20,30))
-formes.append(Rectangle(5,40,20))
-formes.append(Rectangle(6,10,10))
+formes.append(Rectangle(1,50,50))
+formes.append(Rectangle(2,50,50))
+formes.append(Rectangle(3,50,100))
+
 
 algo = Algorithme()
 algo.brut_force_rotate(formes,socle)
