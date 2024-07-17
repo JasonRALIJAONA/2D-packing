@@ -16,9 +16,9 @@ formes.append(Rectangle(5,40,20))
 formes.append(Rectangle(6,10,10))
 
 algo = Algorithme()
-f=algo.brut_force_rotate(formes,socle)
+algo.brut_force_rotate(formes,socle)
 
-for forme in f:
+for forme in formes:
     print(f"({forme.id}) : x : {forme.pos_x} , y : {forme.pos_y} , rayon : {forme.width}")
 
 
