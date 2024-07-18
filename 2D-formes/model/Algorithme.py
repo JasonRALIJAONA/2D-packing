@@ -48,7 +48,7 @@ class Algorithme:
         for form in formes:
             placed = False
             for rotation in [0, 90, 180, 270]:
-                rotated_perimetre = rotate(form.cree_perimetre(), rotation, origin='centroid')
+                rotated_perimetre = rotate(form.cree_perimetre(0), rotation, origin='centroid')
                 for x in range(socle.width):
                     for y in range(socle.height):
                         translated_perimetre = translate(rotated_perimetre, xoff=x, yoff=y)

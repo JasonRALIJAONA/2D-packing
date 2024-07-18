@@ -123,8 +123,8 @@ class Application(tk.Frame):
                 rect['id'],
                 rect['width'],
                 rect['height'],
-                pos_x=rect['pos_x'],
-                pos_y=rect['pos_y'],
+                pos_x=-1,
+                pos_y=-1,
                 color=rect['color']
             ) for rect in data['rectangles']
         ]
@@ -135,8 +135,8 @@ class Application(tk.Frame):
             Cercle(
                 cercle['id'],
                 rayon=cercle['rayon'],
-                pos_x=cercle['pos_x'],
-                pos_y=cercle['pos_y'],
+                pos_x=-1,
+                pos_y=-1,
                 color=cercle['color']
             ) for cercle in data['cercles']
         ]
@@ -147,8 +147,8 @@ class Application(tk.Frame):
             Triangle(
                 triangle['id'],
                 base=triangle['width'],
-                pos_x=triangle['pos_x'],
-                pos_y=triangle['pos_y'],
+                pos_x=-1,
+                pos_y=-1,
                 color=triangle['color']
             ) for triangle in data['triangles']
         ]
