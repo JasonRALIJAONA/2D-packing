@@ -13,7 +13,7 @@ class Application(tk.Frame):
         super().__init__(master)
         self.master = master
         self.master.title("Formulaire")
-        self.master.geometry("300x600")
+        self.master.geometry("400x800")
         self.pack(padx=10, pady=10)
         self.create_socle_widgets()
         self.create_shape_widgets()
