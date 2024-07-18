@@ -180,7 +180,7 @@ class Application(tk.Frame):
         try:
             width = int(self.entry_width.get())
             height = int(self.entry_height.get())
-            rectangle = Rectangle(len(self.rectangles) + 1, width, height)
+            rectangle = Rectangle(len(self.rectangles+self.cercles+self.triangles) + 1, width, height)
             self.rectangles.append(rectangle)
             self.update_result_text()
         except ValueError:
@@ -189,7 +189,7 @@ class Application(tk.Frame):
     def add_cercle(self):
         try:
             rayon = int(self.entry_radius.get())
-            cercle = Cercle(len(self.cercles) + 1, rayon)
+            cercle = Cercle(len(self.rectangles+self.cercles+self.triangles) + 1, rayon)
             self.cercles.append(cercle)
             self.update_result_text()
         except ValueError:
@@ -198,7 +198,7 @@ class Application(tk.Frame):
     def add_triangle(self):
         try:
             base = int(self.entry_base.get())
-            triangle = Triangle(len(self.triangles) + 1, base)
+            triangle = Triangle(len(self.rectangles+self.cercles+self.triangles) + 1, base)
             self.triangles.append(triangle)
             self.update_result_text()
         except ValueError:
