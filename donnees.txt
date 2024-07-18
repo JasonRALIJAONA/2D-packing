@@ -1,0 +1,30 @@
+DEFINITIONS:
+
+• Next-Fit Decreasing Height (NFDH):
+    Next-Fit Decreasing Height (NFDH) est un algorithme utilisé pour optimiser l'arrangement d'objets dans un espace limité, en les triant d'abord par hauteur décroissante, puis en les plaçant l'un après l'autre jusqu'à ce que l'espace soit plein, avant de passer à un nouvel espace si nécessaire.  
+    Données:(width,height) Taille du bac:200
+        (100,300)
+        (200,200)
+        (100,100)
+
+• Best-Fit (BF):
+    Best-Fit en 2D est un algorithme de placement qui, pour un objet donné, cherche l'espace 2D le plus petit pouvant l'accueillir parmi les espaces disponibles, afin de minimiser l'espace inutilisé.
+    Données: Taille du bac: 500
+    (200,400)
+    (300,100)
+    (100,500)
+    (250,200)
+    (150,300)
+
+• First-Fit Decreasing Height (FFDH):
+    First-Fit Decreasing Height (FFDH) est un algorithme qui trie d'abord les objets par hauteur décroissante, puis les place dans le premier espace disponible suffisamment grand, optimisant ainsi l'utilisation de l'espace.
+    Données: Taille du bac: 500
+    (300,200)
+    (400,100)
+    (100,400)
+    (200,300)
+.Worst-fit: Taille du bac : 200
+    (100,300)
+    (100,100)
+    (50,200)
+    (150,400)
