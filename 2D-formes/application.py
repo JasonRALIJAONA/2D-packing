@@ -82,7 +82,7 @@ class Application(tk.Frame):
         ttk.Button(self.frame_shapes, text="Ajouter Triangle", command=self.add_triangle).grid(row=7, column=0, columnspan=2, pady=5)
 
         ttk.Label(self.frame_shapes, text="Choisir l'algorithme:").grid(row=8, column=0, columnspan=2, pady=10)
-        self.algorithm_combobox = ttk.Combobox(self.frame_shapes, values=["Brut_force", "Brut_force_rotate"])
+        self.algorithm_combobox = ttk.Combobox(self.frame_shapes, values=["Heuristique", "Brut_force", "Brut_force_rotate"])
         self.algorithm_combobox.current(0)
         self.algorithm_combobox.grid(row=9, column=0, columnspan=2)
 
@@ -123,37 +123,37 @@ class Application(tk.Frame):
                 rect['id'],
                 rect['width'],
                 rect['height'],
-                pos_x=rect['pos_x'],
-                pos_y=rect['pos_y'],
+                pos_x=-1,
+                pos_y=-1,
                 color=rect['color']
             ) for rect in data['rectangles']
         ]
         for rect in self.rectangles:
-            rect.perimetre = rect.cree_perimetre()
+            rect.perimetre = rect.cree_perimetre(0)
 
         self.cercles = [
             Cercle(
                 cercle['id'],
                 rayon=cercle['rayon'],
-                pos_x=cercle['pos_x'],
-                pos_y=cercle['pos_y'],
+                pos_x=-1,
+                pos_y=-1,
                 color=cercle['color']
             ) for cercle in data['cercles']
         ]
         for cercle in self.cercles:
-            cercle.perimetre = cercle.cree_perimetre()
+            cercle.perimetre = cercle.cree_perimetre(0)
 
         self.triangles = [
             Triangle(
                 triangle['id'],
                 base=triangle['width'],
-                pos_x=triangle['pos_x'],
-                pos_y=triangle['pos_y'],
+                pos_x=-1,
+                pos_y=-1,
                 color=triangle['color']
             ) for triangle in data['triangles']
         ]
         for triangle in self.triangles:
-            triangle.perimetre = triangle.cree_perimetre()
+            triangle.perimetre = triangle.cree_perimetre(0)
 
         socle_data = data['socle']
         self.socle = Socle(
@@ -223,9 +223,10 @@ class Application(tk.Frame):
 
         if algorithm_name == "Brut_force":
             Algorithme().brut_force(formes, self.socle)
+        elif algorithm_name == "Heuristique":
+            Algorithme().heuristic(formes , self.socle)
         elif algorithm_name == "Brut_force_rotate":
             Algorithme().brut_force_rotate(formes, self.socle)
-
         self.update_result_text()
         self.draw_canvas(f"Disposition avec {algorithm_name}")
 
