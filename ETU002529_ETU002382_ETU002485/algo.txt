@@ -196,6 +196,11 @@
                                 form.perimetre = placé.perimetre
                                 brise
         3. --- DONNEES ---
-            
+            Taille du bac: 100,100
+            rectangle 1: 50,50
+            rectangle 2: 50,50
+            triangle 1: 50
+            triangle 2: 50
 
+            7 triangle de taille 40
             
