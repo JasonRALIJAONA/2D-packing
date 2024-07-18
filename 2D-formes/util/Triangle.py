@@ -10,11 +10,11 @@ class Triangle:
         self.height = (int)(math.sqrt(3)/2)*base
         self.pos_x = -1
         self.pos_y = -1
-        self.perimetre = self.cree_perimetre()
+        self.perimetre = self.cree_perimetre(0)
         # a random color
         self.color = (random.randint(0,255),random.randint(0,255),random.randint(0,255))
 
-    def cree_perimetre(self):
+    def cree_perimetre(self , angle):
         # Height of the equilateral triangle
         h = (int)((math.sqrt(3) / 2) * self.width)
         # Distance from the center to a vertex along the y-axis
@@ -25,7 +25,8 @@ class Triangle:
         B = (self.pos_x + self.width / 2, self.pos_y - dy)
         C = (self.pos_x, self.pos_y + (h - dy))
 
-        return Polygon([A, B, C])
+        p=Polygon([A, B, C])
+        return rotate(p,angle,origin='center',use_radians=False)
 
     def copy(self):
         t= Triangle(self.id, self.width)
@@ -36,7 +37,7 @@ class Triangle:
     
     def rotate(self, angle):
         copie=self.copy()
-        copie.perimetre = copie.perimetre.rotate(angle, origin='center', use_radians=False)
+        copie.perimetre = rotate(copie.perimetre,angle,origin='center',use_radians=False)
         return copie
 
 
