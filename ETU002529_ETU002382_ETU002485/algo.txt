@@ -1,0 +1,96 @@
+1. Donnees 1D:
+    taille du bac = 1000
+    (600-500-700-100) 
+   
+   Donnees 2:
+   taille du bac= 500,500
+        (100,200)
+        (275,150)
+        (100,150)
+        (200,100)
+        (50,50) 
+
+
+2. 1D:
+    //Algorithme intermédiaire
+    déf first_fit(objets, taille_bac):
+        bacs = []
+
+        // ajout du premier bac
+        id_bac = 0
+        bacs.ajouter(Bac(id_bac, taille_bac))
+        id_bac += 1
+
+        pour chaque objet dans objets:
+            pour chaque bac dans bacs:
+                si bac.taille_restante() - objet.taille >= 0:
+                    bac.objets.ajouter(objet)
+                    objet.id_bac = bac.id
+                    brise la boucle
+                sinon si (bac.id == longueur(bacs) - 1):
+                    nouveau_bac = Bac(id_bac, taille_bac)
+                    nouveau_bac.objets.ajouter(objet)
+                    bacs.ajouter(nouveau_bac)
+                    objet.id_bac = nouveau_bac.id
+                    id_bac += 1
+                    brise la boucle
+
+        retourne bacs
+
+
+
+    déf brut_force_1d(objets, taille_bac):
+        perm = permutations(objets)
+        bacs = [None] * longueur(objets)
+
+        pour chaque p dans perm:
+            temp_bac = Algorithme.first_fit(p, taille_bac)
+            si longueur(temp_bac) == 1:
+                retourne temp_bac
+            sinon si (bacs[0] est None) ou (longueur(temp_bac) < longueur(bacs)):
+                bacs = temp_bac
+
+        // assigne les objets aux bacs
+        pour chaque bac dans bacs:
+            pour chaque objet dans bac.objets:
+                objet.id_bac = bac.id
+        retourne bacs
+
+    2D:
+        déf apte(rect, rectangle_place, socle):
+            pour chaque pr dans rectangle_place:
+                si non (rect.pos_x + rect.largeur <= pr.pos_x ou rect.pos_x >= pr.pos_x + pr.largeur ou
+                        rect.pos_y + rect.hauteur <= pr.pos_y ou rect.pos_y >= pr.pos_y + pr.hauteur):
+                    retourne Faux  // Chevauche un rectangle déjà placé
+            retourne rect.pos_x + rect.largeur <= socle.largeur et rect.pos_y + rect.hauteur <= socle.hauteur
+
+        déf brut_force(self, rectangles, socle):
+            // Essayer chaque permutation des rectangles
+            pour chaque perm dans permutations(rectangles):
+                rectangles_places = []
+                succes = Vrai
+                pour chaque rect dans perm:
+                    // Essayer de placer le rectangle à la première position où il s'adapte
+                    pour x de 0 à socle.largeur - rect.largeur + 1:
+                        pour y de 0 à socle.hauteur - rect.hauteur + 1:
+                            rect.pos_x, rect.pos_y = x, y
+                            si Algorithme.apte(rect, rectangles_places, socle):
+                                rectangles_places.append(rect)
+                                brise
+                        sinon:
+                            continue
+                        brise
+                    sinon:
+                        succes = Faux
+                        brise
+
+                si succes:
+                    brise
+
+            // Mettre à jour les positions x et y de chaque rectangle
+            pour chaque rec dans rectangles_places:
+                pour chaque org_rec dans rectangles:
+                    si rec.id == org_rec.id:
+                        org_rec.pos_x = rec.pos_x
+                        org_rec.pos_y = rec.pos_y
+                        brise
