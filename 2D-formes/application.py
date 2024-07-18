@@ -129,7 +129,7 @@ class Application(tk.Frame):
             ) for rect in data['rectangles']
         ]
         for rect in self.rectangles:
-            rect.perimetre = rect.cree_perimetre()
+            rect.perimetre = rect.cree_perimetre(0)
 
         self.cercles = [
             Cercle(
@@ -141,7 +141,7 @@ class Application(tk.Frame):
             ) for cercle in data['cercles']
         ]
         for cercle in self.cercles:
-            cercle.perimetre = cercle.cree_perimetre()
+            cercle.perimetre = cercle.cree_perimetre(0)
 
         self.triangles = [
             Triangle(
@@ -153,7 +153,7 @@ class Application(tk.Frame):
             ) for triangle in data['triangles']
         ]
         for triangle in self.triangles:
-            triangle.perimetre = triangle.cree_perimetre()
+            triangle.perimetre = triangle.cree_perimetre(0)
 
         socle_data = data['socle']
         self.socle = Socle(
