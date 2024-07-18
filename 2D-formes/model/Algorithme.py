@@ -104,7 +104,6 @@ class Algorithme:
                     break
     
     def brut_force_rotate(self, formes, socle):
-        # j=0
         finished = False
         for perm in permutations(formes):
             if finished:
@@ -139,9 +138,6 @@ class Algorithme:
                     # Successfully placed all rectangles, can finish
                     finished = True
                     break
-                # to count the number of iterations
-                # print(j)
-                # j+=1
 
         for placed in placed_forms:
             for form in formes:

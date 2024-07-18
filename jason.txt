@@ -1,0 +1,150 @@
+1D:
+    déf first_fit(objets, taille_bac):
+        bacs = []
+
+        // ajout du premier bac
+        id_bac = 0
+        bacs.ajouter(Bac(id_bac, taille_bac))
+        id_bac += 1
+
+        pour chaque objet dans objets:
+            pour chaque bac dans bacs:
+                si bac.taille_restante() - objet.taille >= 0:
+                    bac.objets.ajouter(objet)
+                    objet.id_bac = bac.id
+                    brise la boucle
+                sinon si (bac.id == longueur(bacs) - 1):
+                    nouveau_bac = Bac(id_bac, taille_bac)
+                    nouveau_bac.objets.ajouter(objet)
+                    bacs.ajouter(nouveau_bac)
+                    objet.id_bac = nouveau_bac.id
+                    id_bac += 1
+                    brise la boucle
+
+        retourne bacs
+
+
+
+    déf brut_force_1d(objets, taille_bac):
+        perm = permutations(objets)
+        bacs = [None] * longueur(objets)
+
+        pour chaque p dans perm:
+            temp_bac = Algorithme.first_fit(p, taille_bac)
+            si longueur(temp_bac) == 1:
+                retourne temp_bac
+            sinon si (bacs[0] est None) ou (longueur(temp_bac) < longueur(bacs)):
+                bacs = temp_bac
+
+        // assigne les objets aux bacs
+        pour chaque bac dans bacs:
+            pour chaque objet dans bac.objets:
+                objet.id_bac = bac.id
+        retourne bacs
+
+2D:
+    déf apte(rect, rectangle_place, socle):
+        pour chaque pr dans rectangle_place:
+            si non (rect.pos_x + rect.largeur <= pr.pos_x ou rect.pos_x >= pr.pos_x + pr.largeur ou
+                    rect.pos_y + rect.hauteur <= pr.pos_y ou rect.pos_y >= pr.pos_y + pr.hauteur):
+                retourne Faux  // Chevauche un rectangle déjà placé
+        retourne rect.pos_x + rect.largeur <= socle.largeur et rect.pos_y + rect.hauteur <= socle.hauteur
+
+    déf brut_force(self, rectangles, socle):
+        // Essayer chaque permutation des rectangles
+        pour chaque perm dans permutations(rectangles):
+            rectangles_places = []
+            succes = Vrai
+            pour chaque rect dans perm:
+                // Essayer de placer le rectangle à la première position où il s'adapte
+                pour x de 0 à socle.largeur - rect.largeur + 1:
+                    pour y de 0 à socle.hauteur - rect.hauteur + 1:
+                        rect.pos_x, rect.pos_y = x, y
+                        si Algorithme.apte(rect, rectangles_places, socle):
+                            rectangles_places.append(rect)
+                            brise
+                    sinon:
+                        continue
+                    brise
+                sinon:
+                    succes = Faux
+                    brise
+
+            si succes:
+                brise
+
+        // Mettre à jour les positions x et y de chaque rectangle
+        pour chaque rec dans rectangles_places:
+            pour chaque org_rec dans rectangles:
+                si rec.id == org_rec.id:
+                    org_rec.pos_x = rec.pos_x
+                    org_rec.pos_y = rec.pos_y
+                    brise
+
+
+2D avec forme:
+    déf apte(forme, polygones_places, socle):
+        // Vérifie si la forme est dans les limites du socle
+        si non forme.est_dans(Polygone([(socle.pos_x, socle.pos_y), 
+                                        (socle.pos_x + socle.largeur, socle.pos_y), 
+                                        (socle.pos_x + socle.largeur, socle.pos_y + socle.hauteur), 
+                                        (socle.pos_x, socle.pos_y + socle.hauteur)])):
+            retourne Faux
+
+        // Vérifie si la forme intersecte avec un des polygones placés
+        pour chaque placé dans polygones_places:
+            si forme.intersecte(placé.perimetre):
+                // Si la forme touche seulement le polygone placé (partage une frontière sans chevauchement), ce n'est pas considéré comme une intersection
+                si forme.touche(placé.perimetre):
+                    continue
+                retourne Faux
+
+        retourne Vrai
+
+    déf brut_force_rotation(self, formes, socle):
+        terminé = Faux
+        pour chaque perm dans permutations(formes):
+            si terminé:
+                brise
+            // Chaque élément dans orientations est un tuple d'entiers (0, 90, 180) représentant l'angle de rotation pour chaque forme
+            pour chaque orientations dans produit([0, 90, 180], répéter=len(formes)):
+                si terminé:
+                    brise
+                formes_placées = []
+                succès = Vrai
+                pour chaque form, angle_rotation dans zip(perm, orientations):
+                    // Faire tourner la forme selon l'angle spécifié
+                    form = form.rotate(angle_rotation)
+                    
+                    // Essayer de placer la forme à la première position où il s'adapte
+                    pour x de 0 à socle.largeur - form.largeur + 1:
+                        pour y de 0 à socle.hauteur - form.hauteur + 1:
+                            form.pos_x, form.pos_y = x, y
+                            form.perimetre = form.cree_perimetre(angle_rotation)
+                            si Algorithme.apte(form.perimetre, formes_placées, socle):
+                                form_copie = form.copier()  // Supposons qu'il y a une méthode pour copier la forme
+                                formes_placées.append(form_copie)
+                                brise
+                        sinon:
+                            continue
+                        brise
+                    sinon:
+                        succès = Faux
+                        brise
+
+                si succès:
+                    // Toutes les formes ont été placées avec succès, on peut terminer
+                    terminé = Vrai
+                    brise
+
+        pour chaque placé dans formes_placées:
+            pour chaque form dans formes:
+                si placé.id == form.id:
+                    form.pos_x = placé.pos_x
+                    form.pos_y = placé.pos_y
+                    form.perimetre = placé.perimetre
+                    brise
+
+
+
+

@@ -1,4 +1,6 @@
 from util.Bac import Bac
+from itertools import permutations
+from copy import deepcopy
 
 class Algorithme:
     def __init__(self) -> None:
@@ -89,6 +91,30 @@ class Algorithme:
                 objet.id_bac=bac_choisi.id
 
         return bacs
+
+    def brut_force(objets, taille_bac):
+        perm=permutations(objets)
+        bacs=[None]*len(objets)
+
+        for p in perm:
+            temp_bac=Algorithme.first_fit(p,taille_bac)
+            if len(temp_bac)==1:
+                return temp_bac
+            elif (bacs[0] is None) or (len(temp_bac)<len(bacs)):
+                print(temp_bac)
+                bacs=temp_bac
+
+        # assigne les objets aux bacs
+        for bac in bacs:
+            for objet in bac.objets:
+                objet.id_bac=bac.id
+        return bacs
+
+        
+
+                
+        
+
                         
 
         
