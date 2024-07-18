@@ -2,8 +2,9 @@
     taille du bac = 1000
     (600-500-700-100) 
    
-   Donnees 2:
+   Donnees 2D:
    taille du bac= 500,500
+        (150,250)
         (100,200)
         (275,150)
         (100,150)
