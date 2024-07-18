@@ -146,5 +146,34 @@
                     brise
 
 
+déf heuristique(self, formes, socle):
+    formes.trier(clé=lambda f: max(f.largeur, f.hauteur), ordre_décroissant=Vrai)
+    polygones_placés = []
+
+    pour chaque forme dans formes:
+        placé = Faux
+        pour chaque rotation dans [0, 90, 180]:
+            perimetre_tourne = tourner(forme.cree_perimetre(0), rotation, origine='centre')
+            pour x de 0 à socle.largeur:
+                pour y de 0 à socle.hauteur:
+                    perimetre_translation = translation(perimetre_tourne, deplacement_x=x, deplacement_y=y)
+                    forme.pos_x, forme.pos_y = x, y
+                    forme.perimetre = perimetre_translation
+                    si self.fits(forme.perimetre, polygones_placés, socle):
+                        polygones_placés.append(forme)
+                        placé = Vrai
+                        brise
+                si placé:
+                    brise
+            si placé:
+                brise
+
+    pour chaque placé dans polygones_placés:
+        pour chaque forme dans formes:
+            si placé.id == forme.id:
+                forme.pos_x = placé.pos_x
+                forme.pos_y = placé.pos_y
+                forme.perimetre = placé.perimetre
+                brise
 
 
