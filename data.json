@@ -2,82 +2,82 @@
     "rectangles": [
         {
             "id": 1,
-            "width": 30,
-            "height": 50,
+            "width": 150,
+            "height": 250,
             "pos_x": -1,
             "pos_y": -1,
             "color": [
-                111,
-                23,
-                122
+                200,
+                122,
+                119
             ]
         },
         {
             "id": 2,
-            "width": 20,
-            "height": 40,
+            "width": 100,
+            "height": 200,
             "pos_x": -1,
             "pos_y": -1,
             "color": [
-                6,
-                236,
-                167
+                61,
+                153,
+                183
             ]
         },
         {
             "id": 3,
-            "width": 55,
-            "height": 30,
+            "width": 275,
+            "height": 150,
             "pos_x": -1,
             "pos_y": -1,
             "color": [
-                14,
-                99,
-                192
+                208,
+                211,
+                159
             ]
         },
         {
             "id": 4,
-            "width": 20,
-            "height": 30,
+            "width": 100,
+            "height": 150,
             "pos_x": -1,
             "pos_y": -1,
             "color": [
-                172,
-                239,
-                187
+                135,
+                120,
+                9
             ]
         },
         {
             "id": 5,
-            "width": 40,
-            "height": 20,
+            "width": 200,
+            "height": 100,
             "pos_x": -1,
             "pos_y": -1,
             "color": [
-                172,
-                239,
-                187
+                249,
+                234,
+                76
             ]
         },
         {
             "id": 6,
-            "width": 10,
-            "height": 10,
+            "width": 50,
+            "height": 50,
             "pos_x": -1,
             "pos_y": -1,
             "color": [
-                172,
-                239,
-                187
+                166,
+                235,
+                149
             ]
         }
     ],
     "socle": {
         "pos_x": 0,
         "pos_y": 0,
-        "width": 100,
-        "height": 100,
+        "width": 500,
+        "height": 500,
         "pos_x_actuel": 0,
         "pos_y_actuel": 0,
         "rectangles": [],
